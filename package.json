@@ -8,7 +8,7 @@
     "mkTmpRelease": "mkdir release && mkdir tmp",
     "jsToRelease": "cp-cli ./tmp/mainB.js ./release/main.js",
     "minJsToRelease": "cp-cli ./tmp/mainBmin.js ./release/main.js",
-    "htmlToRelease": "cp-cli index.html ./release/index.html",
+    "htmlToRelease": "cp-cli ./index.html ./release/index.html",
     "cssToRelease": "cp-cli ./styles/style.css ./release/style.css",
     "minCssToRelease": "cp-cli ./tmp/styleMin.css ./release/style.css",
     "browserifyjs": "browserify ./js/main.js > ./tmp/mainB.js",
