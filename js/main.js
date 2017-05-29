@@ -1,10 +1,12 @@
-// Testausgabe auf der Konsole, um festzustellen, ob das Skript
-// überhaupt ausgeführt wird
-var a = 5;
-console.log(a);
+function initMap() {
+	// Propertie-objekt mit den Koordinaten von Trier
+	var mapProp = {
+		center: new google.maps.LatLng(49.75, 6.6371),
+		zoom: 14,
+	};
 
-// Veränderung des HTML-Textes
-let element = document.getElementById("TestText");
-if (element) {
-	element.innerHTML = "Hallo Welt!";
+	// Map mit Property öffnen
+	var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 }
+
+initMap();

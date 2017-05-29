@@ -14,7 +14,7 @@
     "browserifyjs": "browserify ./js/main.js > ./tmp/mainB.js",
     "minificationjs": "babili ./tmp/mainB.js > ./tmp/mainBmin.js",
     "minificationcss": "lessc --clean-css ./styles/style.css ./tmp/styleMin.css",
-    "build": "npm run lint && npm run mkTmpRelease && npm run browserifyjs && npm run minificationjs && npm run minificationcss && npm run htmlToRelease && npm run minCssToRelease && npm run minJsToRelease",
+    "build": "npm run mkTmpRelease && npm run browserifyjs && npm run minificationjs && npm run minificationcss && npm run htmlToRelease && npm run minCssToRelease && npm run minJsToRelease",
     "debug": "npm run lint && npm run mkTmpRelease && npm run browserifyjs && npm run htmlToRelease && npm run cssToRelease && npm run jsToRelease",
     "start": "http-server ./release",
     "clean": "del-cli -f tmp && del-cli -f release",
