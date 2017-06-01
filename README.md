@@ -11,6 +11,7 @@ npm install -g babili
 npm install -g less-plugin-clean-css
 npm install -g http-server
 npm install -g eslint
+npm install -g express
 --------------------------------
 
 Zum Builden des Projekts, im Projektordner in der Konsole

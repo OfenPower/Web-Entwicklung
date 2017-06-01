@@ -1,24 +1,27 @@
 /*
 vw, vh : viewport-width, viewport-height
 */
+@vheight: 100vh;
+@vwidthMap: 70vw;
+@vwidthTracks: 30vw; 
 
 #googleMap {
-    height: 100vh;
-    width: 70vw;
+    height: @vheight;
+    width: @vwidthMap;
 }
 
 #tracks {
     display: flex;
     flex-direction: column;
     background-color: #19DCE8;
-    width: 30vw;
-    height: 100vh;
+    width: @vwidthTracks;
+    height: @vheight;
 }
 
 body {
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    height: @vheight;
     margin: 0;
     padding: 0;
 }
