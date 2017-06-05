@@ -9,7 +9,7 @@ npm install -g mkdir
 npm install -g browserify
 npm install -g babili
 npm install -g less-plugin-clean-css
-npm install -g http-server
+npm install -g less
 npm install -g eslint
 npm install -g express
 --------------------------------

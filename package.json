@@ -1,7 +1,7 @@
 {
   "name": "hausarbeit-buildprozess",
   "version": "1.0.0",
-  "description": "Der NPM-Buildprozess. 'npm run build' bzw. 'npm run debug', dann -> 'npm start' zum Starten des http-Servers",
+  "description": "Der NPM-Buildprozess. 'npm run build' bzw. 'npm run debug', dann -> 'npm start 8080' zum Starten des http-Servers",
   "main": "index.html",
   "scripts": {
     "lint": "eslint ./js/main.js",
@@ -18,12 +18,21 @@
     "build": "npm run lint && npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run minificationjs && npm run minificationcss && npm run htmlToRelease && npm run minCssToRelease && npm run minJsToRelease",
     "debug": "npm run lint && npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run htmlToRelease && npm run cssToRelease && npm run jsToRelease",
     "start": "node ./js/startServer.js 8080",
-    "clean": "del-cli -f tmp && del-cli -f release",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "del-cli -f tmp && del-cli -f release"
   },
   "author": "Daniel Bach",
   "license": "ISC",
   "dependencies": {
-    "http-server": "^0.10.0"
+    "express": "latest"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "less": "latest",
+    "less-plugin-clean-css": "latest",
+    "browserify": "latest",
+    "babili": "latest",
+    "cp-cli": "latest",
+    "del-cli": "latest",
+    "mkdir": "latest"
   }
 }
