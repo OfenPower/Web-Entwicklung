@@ -1,18 +1,6 @@
 # Web-Entwicklung
 Hausarbeit - Repository
-
-Benötigte installierte Module:
---------------------------------
-npm install -g cp-cli
-npm install -g del-cli
-npm install -g mkdir
-npm install -g browserify
-npm install -g babili
-npm install -g less-plugin-clean-css
-npm install -g less
-npm install -g eslint
-npm install -g express
---------------------------------
+-----------------------------------------------------------------
 
 Zum Builden des Projekts, im Projektordner in der Konsole
 
@@ -25,11 +13,11 @@ bzw.
 eintippen. Im Ordner /release befinden sich dann alle benötigten Datein zum 
 Starten des Servers. 
 
-'npm start' 
+'npm start <port>' 
 
-fährt den http-server auf Port 8080 hoch. Der Befehl
+fährt den http-server auf Port <port> hoch. Der Befehl
 
 'npm run clean'
 
-löscht alle, im Build-Prozess enstandenen, Dateien im /tmp Ordner.
+löscht alle, im Build-Prozess enstandenen, Dateien im /tmp und /release Ordner.
 
