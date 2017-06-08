@@ -17,8 +17,8 @@
     "minificationcss": "lessc --clean-css ./tmp/style.css ./tmp/styleMin.css",
     "prebuild": "npm run clean",
     "predebug": "npm run clean",
-    "build": "npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run minificationjs && npm run minificationcss && npm run htmlToRelease && npm run minCssToRelease && npm run minJsToRelease",
-    "debug": "npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run htmlToRelease && npm run cssToRelease && npm run jsToRelease",
+    "build": "npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run minificationjs && npm run minificationcss && npm run htmlToRelease && npm run minCssToRelease && npm run minJsToRelease && npm start",
+    "debug": "npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run htmlToRelease && npm run cssToRelease && npm run jsToRelease && npm start",
     "start": "node ./js/startServer.js 8080",
     "clean": "del-cli -f tmp && del-cli -f release"
   },
@@ -26,7 +26,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "latest",
-    "google-maps": "latest"
+    "google-maps": "latest",
+    "body-parser": "latest"
   },
   "devDependencies": {
     "eslint": "latest",
