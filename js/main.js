@@ -8,7 +8,7 @@ var map;
 // Funktion zum Laden der Karte mit Blick auf Trier.
 //
 GoogleMapsLoader.load(function (google) {
-	// Propertie-objekt mit den Koordinaten von Trier
+	// Propertie-Objekt mit den Koordinaten von Trier
 	var mapProp = {
 		center: new google.maps.LatLng(49.75, 6.6371),
 		zoom: 14,
@@ -24,7 +24,7 @@ Bei einem Mausklick auf den Eintrag werden entsprechende Marker gesetzt.
 */
 var tracklist = document.getElementById("tracks");
 
-// Einträge erzeugen
+// Eintrag erzeugen
 var track01 = document.createElement("p");
 var track01Text = document.createTextNode("Trier - Konz - Trier");
 track01.addEventListener("mousedown", (event) => {
@@ -32,7 +32,7 @@ track01.addEventListener("mousedown", (event) => {
 });
 track01.appendChild(track01Text);
 
-// Einträge in DOM-Baum einbauen
+// Eintrag in DOM-Baum einbauen
 tracklist.appendChild(track01);
 
 // Testfunktionen, welche pro Koordinate in einer .json Datei

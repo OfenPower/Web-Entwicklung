@@ -2,19 +2,19 @@
 Aufbau einer .json Datei
 
 "features": [
-        {
-            "geometry": {
-                "coordinates": [
+		{
+			"geometry": {
+				"coordinates": [
 					[
-                        6.57111,
-                        49.999360000000003,
-                        233
-                    ],
-                    [
-                        6.5702299999999996,
-                        50.00009,
-                        239.90000000000001
-                    ],
+						6.57111,
+						49.999360000000003,
+						233
+					],
+					[
+						6.5702299999999996,
+						50.00009,
+						239.90000000000001
+					],
 */
 
 /*
@@ -44,9 +44,8 @@ google.maps.LatLng(49.755, 6.6373)
 var jsonTest = require("../assets/data/1.json");
 
 // Testweise Durch Koordinaten iterieren
-for(var i=0; i < jsonTest.features[0].geometry.coordinates.length; i++)
-{
-    var lat = jsonTest.features[0].geometry.coordinates[i][1];
-    var lng = jsonTest.features[0].geometry.coordinates[i][0];
-    console.log(lat + "   " + lng);
+for (var i = 0; i < jsonTest.features[0].geometry.coordinates.length; i++) {
+	var lat = jsonTest.features[0].geometry.coordinates[i][1];
+	var lng = jsonTest.features[0].geometry.coordinates[i][0];
+	console.log(lat + "   " + lng);
 }

@@ -13,11 +13,16 @@ bzw.
 eintippen. Im Ordner /release befinden sich dann alle benötigten Datein zum 
 Starten des Servers. 
 
-'npm start <port>' 
+'npm start' 
 
-fährt den http-server auf Port <port> hoch. Der Befehl
+fährt den http-server auf Port 8080 hoch. Der Befehl
 
 'npm run clean'
 
 löscht alle, im Build-Prozess enstandenen, Dateien im /tmp und /release Ordner.
+Der Befehl
+
+'node ./js/startServer <port>'
+
+startet den Server auf dem angegebenem Port.
 
