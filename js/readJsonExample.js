@@ -46,5 +46,7 @@ var jsonTest = require("../assets/data/1.json");
 // Testweise Durch Koordinaten iterieren
 for(var i=0; i < jsonTest.features[0].geometry.coordinates.length; i++)
 {
-    console.log(jsonTest.features[0].geometry.coordinates[i][1] + "    " + jsonTest.features[0].geometry.coordinates[i][0])
+    var lat = jsonTest.features[0].geometry.coordinates[i][1];
+    var lng = jsonTest.features[0].geometry.coordinates[i][0];
+    console.log(lat + "   " + lng);
 }
