@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 // const bodyParser = require("body-parser");
-var server = express();
+var server = express();		// Express-Server Objekt wird zurückgeliefert
 
 // Kommandozeilenargument (port) einlesen und
 // BASE_URI anlegen
@@ -16,15 +16,19 @@ server.listen(PORT, () => console.log(`Server is listening on ${BASE_URI}`));
 
 // HTTP-GET - Testmethode
 // Aufruf mit: localhost:8080/test
-server.get("/test", function (req, res) {
-	// sendFile verlangt absoluten Pfad
-	// => Pfad zu /release/index.html zusammenbauen
-	// __dirname liefert absoluten Pfad zum /js-Ordner
-	res.sendFile(path.join(__dirname, "../release/index.html"));
+/*
+:id benutzen
+*/
+
+server.get("/tracks/:id", function (req, res) {
+	
+	// Track anhand der ID [0,n] unterscheiden
+	res.json(require("./../assets/data/" + req.params.id + ".json"));
 
 	// console.log() wird im Erfolgsfall auf der
 	// Serverkonsole ausgegeben (cmd)
 	console.log("Server GET ausgeführt!");
+	res.end();
 });
 
 // bodyParser parst den Body der Http Anfragen
