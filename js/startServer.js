@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");	// zum auslesen des /assets/data Ordners
 // const bodyParser = require("body-parser");
 var server = express();		// Express-Server Objekt wird zurückgeliefert
 
@@ -14,16 +15,42 @@ server.use(express.static(path.join(__dirname, "../release")));
 // Server starten
 server.listen(PORT, () => console.log(`Server is listening on ${BASE_URI}`));
 
-// HTTP-GET - Testmethode
-// Aufruf mit: localhost:8080/test
-/*
-:id benutzen
-*/
+// /tracks liefert die Namen der Tracks in sortierter
+// Reihenfolge an den Browser aus
+server.get("/tracks", function (req, res) {
+	// Anzahl der Tracks im /assets/data Ordner bestimmen
+	var files = fs.readdirSync("./assets/data");	// synchroner Zugriff aufs Filesystem
+	var fileCount = files.length;
 
+	// Über .json Files iterieren, Tracknamen herauslesen und abspeichern
+	var names = [];
+	for (var i = 1; i <= fileCount; i++) {
+		var jsonTest = require("../assets/data/" + i + ".json");
+		var name = jsonTest.features[0].properties.name;
+		names.push(name);
+	}
+
+	// Namen als .json Datei an Browser ausliefern
+	// Format: {<index> : <name>}
+	// ACHTUNG: index wird hier ab 0 gezählt, weil 'names' eine Liste ist.
+	// Bei einer entsprechenden /tracks/:id Anfrage wird die angegebene id
+	// um 1 inkrementiert, da die .json Dateien im Fileystem ab index 1
+	// durchnummeriert sind.
+	res.json(names);
+	res.end();
+});
+
+// /tracks/:id liefert die jeweilige :id.json Datei
+// an den Browser aus
 server.get("/tracks/:id", function (req, res) {
-	
-	// Track anhand der ID [0,n] unterscheiden
-	res.json(require("./../assets/data/" + req.params.id + ".json"));
+	// :id um 1 inkrementieren, da Tracks ab Index 0
+	// an den Browser ausgeliefert wurden!
+	var id = req.params.id;
+	id++;
+
+	// Track anhand der id unterscheiden und jeweilige
+	// .json zurückliefern
+	res.json(require("./../assets/data/" + id + ".json"));
 
 	// console.log() wird im Erfolgsfall auf der
 	// Serverkonsole ausgegeben (cmd)

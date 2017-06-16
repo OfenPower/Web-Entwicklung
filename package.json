@@ -4,7 +4,7 @@
   "description": "Der NPM-Buildprozess. 'npm run build' bzw. 'npm run debug', dann -> 'npm start 8080' zum Starten des http-Servers",
   "main": "index.html",
   "scripts": {
-    "lint": "eslint ./js/main.js",
+    "lint": "eslint ./js/*.js",
     "mkTmpRelease": "mkdir release && mkdir tmp",
     "jsToRelease": "cp-cli ./tmp/mainB.js ./release/main.js",
     "minJsToRelease": "cp-cli ./tmp/mainBmin.js ./release/main.js",
