@@ -24,12 +24,33 @@ vw, vh : viewport-width, viewport-height
     background-color: #19DCE8;
 }
 
+.pageButton {
+    padding: 5px;
+    font-size: 200%;
+    margin: 10px;
+    border: none;
+    background-color: transparent;
+    &:hover { color: lighten(#000000, 60%) }
+}
+
+#pageCount {
+    margin-right: 20px;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 #tracks {
     padding: 0;
     &> li {
         list-style-type: none;
         border: 1px solid grey;
         padding: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        &:hover { color: lighten(#000000, 40%) }
+        &:hover { background-color: lighten(#19DCE8, 20%) }
     }
 }
 

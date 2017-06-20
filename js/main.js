@@ -27,7 +27,6 @@ var tracklist = document.getElementById("tracks");
 // per DOM-Manipulation auflisten
 function getTrackNames() {
 	fetchTracklist().then(jsonData => {
-		console.log(jsonData.length);
 		for (var i = 0; i < jsonData.length; i++) {
 			// Trackeintrag erzeugen und in DOM-Baum einfügen
 			var track = document.createElement("li");
