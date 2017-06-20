@@ -1,0 +1,34 @@
+/*
+vw, vh : viewport-width, viewport-height
+*/
+#googleMap {
+  height: 100vh;
+  width: 70vw;
+}
+#pageDiv {
+  display: flex;
+  flex-direction: column;
+  background-color: #19DCE8;
+  width: 30vw;
+  height: 100vh;
+}
+#pageControl {
+  display: flex;
+  flex-direction: row;
+  background-color: #19DCE8;
+}
+#tracks {
+  padding: 0;
+}
+#tracks > li {
+  list-style-type: none;
+  border: 1px solid grey;
+  padding: 5px;
+}
+body {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}

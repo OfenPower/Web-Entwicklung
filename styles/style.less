@@ -10,12 +10,27 @@ vw, vh : viewport-width, viewport-height
     width: @vwidthMap;
 }
 
-#tracks {
+#pageDiv {
     display: flex;
     flex-direction: column;
     background-color: #19DCE8;
     width: @vwidthTracks;
     height: @vheight;
+}
+
+#pageControl {
+    display: flex;
+    flex-direction: row;
+    background-color: #19DCE8;
+}
+
+#tracks {
+    padding: 0;
+    &> li {
+        list-style-type: none;
+        border: 1px solid grey;
+        padding: 5px;
+    }
 }
 
 body {

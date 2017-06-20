@@ -26,12 +26,11 @@ var tracklist = document.getElementById("tracks");
 // GET-Anfrage an die Trackliste stellen und Tracknamen
 // per DOM-Manipulation auflisten
 function getTrackNames() {
-	console.log("getTrackNames");
 	fetchTracklist().then(jsonData => {
 		console.log(jsonData.length);
 		for (var i = 0; i < jsonData.length; i++) {
 			// Trackeintrag erzeugen und in DOM-Baum einfügen
-			var track = document.createElement("p");
+			var track = document.createElement("li");
 			var trackText = document.createTextNode(jsonData[i]);
 			track.setAttribute("id", i);
 			track.addEventListener("mousedown", (event) => {
@@ -70,8 +69,13 @@ function fetchTracklist() {
 	});
 }
 
+// coordinatePath enthält später eine angezeigte Route.
+// Falls es eine schon angezeigte Route gibt, wird diese bei einem 
+// Aufruf von showCoordinates() gelöscht
+var coordinatePath;
+
 // showCoordinates() lädt Koordinaten des gewünschten Tracks
-// und zeigt diese als Route auf der Map an
+// und zeigt diese als Route auf der Map an.
 function showCoordinates(trackId) {
 	GoogleMapsLoader.load(function (google) {
 		// gewünschte .json Datei mit Koordinaten laden
@@ -86,9 +90,14 @@ function showCoordinates(trackId) {
 				coordinates.push({ lat: latValue, lng: lngValue });
 			}
 
+			// Alte Route löschen, falls schon eine erzeugt wurde
+			if(coordinatePath) {
+				coordinatePath.setMap(null);
+			}
+
 			// Route mit Polylines zeichnen
-			var coordinatePath = new google.maps.Polyline({
-				path: coordinates,
+			coordinatePath = new google.maps.Polyline({
+				path: coordinates,	// => Koordinaten einer .json Datei
 				geodesic: true,
 				strokeColor: "#FF0000",
 				strokeOpacity: 1.0,
@@ -97,6 +106,15 @@ function showCoordinates(trackId) {
 
 			// Route auf der Map einblenden
 			coordinatePath.setMap(map);
+
+			// Map auf die eingeblendete Route zentrieren
+			var bounds = new google.maps.LatLngBounds();
+			for (var i = 0; i < coordinates.length; i++) {
+				// LatLngBounds-Objekt pro Koordinate "erweitern" 
+				bounds.extend(coordinates[i]);	
+			}
+			map.fitBounds(bounds);
+			map.setCenter(bounds.getCenter());
 		});
 	});
 }

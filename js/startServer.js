@@ -25,8 +25,8 @@ server.get("/tracks", function (req, res) {
 	// Über .json Files iterieren, Tracknamen herauslesen und abspeichern
 	var names = [];
 	for (var i = 1; i <= fileCount; i++) {
-		var jsonTest = require("../assets/data/" + i + ".json");
-		var name = jsonTest.features[0].properties.name;
+		var jsonFile = require("../assets/data/" + i + ".json");
+		var name = jsonFile.features[0].properties.name;
 		names.push(name);
 	}
 
