@@ -5,10 +5,15 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var GoogleMapsLoader = require("google-maps");
 GoogleMapsLoader.KEY = "AIzaSyCJjEgwGdn2ldnLgpJKUdML5Zrk8X7zt5Y";
 
-// Variable 'map' wird später die gespeicherte Karte enthalten
-var map;
+var tracklist = [];			// Liste zum Speichern aller Trackelemente. Aus dieser Liste werden Tracks zum Paginieren entnommen.
+var map;					// Variable 'map' wird später die gespeicherte Karte enthalten
 
-// Funktion zum Laden der Karte mit Blick auf Trier.
+var trackdiv = document.getElementById("tracks");								// trackdiv der index.html holen
+var browserWindowHeight = document.getElementById("googleMap").offsetHeight;	// Höhe des Browserfensters mit padding,border (Paginierung)
+var pageControlHeight = document.getElementById("pageControl").offsetHeight;	// Höhe des PageControlDivs mit (Paginierung)
+var listElementHeight;		// Höhe eines Tracklistenelements holen (wird später zugewiesen)
+
+// Funktion zum Laden der Karte mit Blick auf Trier
 GoogleMapsLoader.load(function (google) {
 	// Propertie-Objekt mit den Koordinaten von Trier
 	var mapProp = {
@@ -20,29 +25,47 @@ GoogleMapsLoader.load(function (google) {
 	map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 });
 
-// Tracklistenelement der index.html holen
-var tracklist = document.getElementById("tracks");
-
-// GET-Anfrage an die Trackliste stellen und Tracknamen
-// per DOM-Manipulation auflisten
-function getTrackNames() {
-	fetchTracklist().then(jsonData => {
-		for (var i = 0; i < jsonData.length; i++) {
-			// Trackeintrag erzeugen und in DOM-Baum einfügen
-			var track = document.createElement("li");
-			var trackText = document.createTextNode(jsonData[i]);
-			track.setAttribute("id", i);
-			track.addEventListener("mousedown", (event) => {
-				var trackId = event.target.getAttribute("id");
-				console.log(trackId);
-				showCoordinates(trackId);
-			});
-			track.appendChild(trackText);
-			tracklist.appendChild(track);
+// GET-Anfrage an die Trackliste stellen und Tracks in Liste abspeichern
+fetchTracklist().then(jsonData => {
+	for (var i = 0; i < jsonData.length; i++) {
+		// Trackeintrag erzeugen und in DOM-Baum einfügen
+		var track = document.createElement("li");
+		if(i % 2 == 0) {
+			track.style.backgroundColor = "#00FFFF";
 		}
-	});
+		var trackText = document.createTextNode(jsonData[i]);
+		track.setAttribute("id", i);	// id bezeichnet eine :id.json!
+		track.addEventListener("mousedown", (event) => {
+			var trackId = event.target.getAttribute("id");
+			showCoordinates(trackId);
+		});			
+		track.appendChild(trackText);
+		tracklist.push(track);	// Trackelement in Liste abspeichern
+	}
+	
+	trackdiv.appendChild(tracklist[0]);				// Ein Trackelement anzeigen
+	listElementHeight = tracklist[0].offsetHeight;	// Höhe des Tracklistenelements abspeichern	(Paginierung)
+	paginateTracklist();							// Trackliste paginieren
+});
+
+// Paginierungsfunktion
+function paginateTracklist() {
+	// Alte Listenelemente löschen (falls vorhanden)
+	while(trackdiv.firstChild) {
+		trackdiv.removeChild(trackdiv.firstChild);
+	}
+
+	// Neue Höhe des divs holen, welche die Tracks enthalten wird
+	browserWindowHeight = document.getElementById("pageDiv").offsetHeight;
+	// Ausrechnen, wieviele Tracks in die Liste eingefügt werden können
+	var tracksToInsert = Math.floor((browserWindowHeight - pageControlHeight) / listElementHeight);
+	for(var i = 0; i < tracksToInsert; i++) {
+		trackdiv.appendChild(tracklist[i]);
+	}
 }
-getTrackNames();
+
+// Beim Ändern der Größe des Browserfensters wird die Paginierungsfunktion erneut aufgerufen
+window.onresize = paginateTracklist;
 
 function fetchTracklist() {
 	return new Promise(function (resolve, reject) {

@@ -43,18 +43,12 @@ server.get("/tracks", function (req, res) {
 // /tracks/:id liefert die jeweilige :id.json Datei
 // an den Browser aus
 server.get("/tracks/:id", function (req, res) {
-	// :id um 1 inkrementieren, da Tracks ab Index 0
-	// an den Browser ausgeliefert wurden!
+	// :id um 1 inkrementieren, da Tracks ab Index 0 an den Browser ausgeliefert wurden!
 	var id = req.params.id;
 	id++;
 
-	// Track anhand der id unterscheiden und jeweilige
-	// .json zurückliefern
+	// Track anhand der id unterscheiden und jeweilige .json zurückliefern
 	res.json(require("./../assets/data/" + id + ".json"));
-
-	// console.log() wird im Erfolgsfall auf der
-	// Serverkonsole ausgegeben (cmd)
-	console.log("Server GET ausgeführt!");
 	res.end();
 });
 

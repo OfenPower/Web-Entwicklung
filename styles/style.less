@@ -4,6 +4,8 @@ vw, vh : viewport-width, viewport-height
 @vheight: 100vh;
 @vwidthMap: 70vw;
 @vwidthTracks: 30vw; 
+@textColor: #000000;
+@trackColor01: #19DCE8;
 
 #googleMap {
     height: @vheight;
@@ -13,7 +15,7 @@ vw, vh : viewport-width, viewport-height
 #pageDiv {
     display: flex;
     flex-direction: column;
-    background-color: #19DCE8;
+    background-color: @trackColor01;
     width: @vwidthTracks;
     height: @vheight;
 }
@@ -21,7 +23,7 @@ vw, vh : viewport-width, viewport-height
 #pageControl {
     display: flex;
     flex-direction: row;
-    background-color: #19DCE8;
+    background-color: @trackColor01;
 }
 
 .pageButton {
@@ -30,7 +32,7 @@ vw, vh : viewport-width, viewport-height
     margin: 10px;
     border: none;
     background-color: transparent;
-    &:hover { color: lighten(#000000, 60%) }
+    &:hover { color: lighten(@textColor, 60%) }
 }
 
 #pageCount {
@@ -42,6 +44,7 @@ vw, vh : viewport-width, viewport-height
 
 #tracks {
     padding: 0;
+    margin: 0;
     &> li {
         list-style-type: none;
         border: 1px solid grey;
@@ -49,8 +52,8 @@ vw, vh : viewport-width, viewport-height
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        &:hover { color: lighten(#000000, 40%) }
-        &:hover { background-color: lighten(#19DCE8, 20%) }
+        &:hover { color: lighten(@textColor, 40%) }
+        &:hover { background-color: lighten(@trackColor01, 20%) }
     }
 }
 
