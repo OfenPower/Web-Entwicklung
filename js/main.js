@@ -69,8 +69,9 @@ function removeTracksFromDiv() {
 
 function fillTracklist() {
 	tracksToInsert = calculateTracksToInsert();
+	bottomTrackIndex = 0;
 	topTrackIndex = tracksToInsert;
-	for(var i = bottomTrackIndex; i < tracksToInsert; i++) {
+	for(var i = 0; i < tracksToInsert; i++) {
 		trackdiv.appendChild(tracklist[i]);
 	}
 }
@@ -81,6 +82,7 @@ function calculateTracksToInsert() {
 }
 
 function fillTracklistFromTo(bottom, top) {
+	removeTracksFromDiv();
 	for(var i = bottom; i < top; i++) {
 		trackdiv.appendChild(tracklist[i]);
 	}
@@ -88,23 +90,27 @@ function fillTracklistFromTo(bottom, top) {
 
 // Beim Ändern der Größe des Browserfensters wird die Paginierungsfunktion erneut aufgerufen
 window.onresize = function() {
+	console.log("BottomTrackIndex: " + bottomTrackIndex);
+	console.log("TopTrackIndex: " + topTrackIndex);
 	removeTracksFromDiv();
 	fillTracklist();
 }
 
 leftButton.onclick = function() {
 	var decreaseSummand = tracksToInsert;
-	bottomTrackIndex -= decreaseSummand;
-	topTrackIndex -= decreaseSummand;
-	removeTracksFromDiv();
+	if(!(bottomTrackIndex - decreaseSummand < 0)) {
+		bottomTrackIndex -= decreaseSummand;
+		topTrackIndex -= decreaseSummand;
+	}
 	fillTracklistFromTo(bottomTrackIndex, topTrackIndex);
 }
 
 rightButton.onclick = function() {
 	var increaseSummand = tracksToInsert;
-	bottomTrackIndex += increaseSummand;
-	topTrackIndex += increaseSummand;
-	removeTracksFromDiv();
+	if(!(bottomTrackIndex + increaseSummand >= tracklist.length)) {
+		bottomTrackIndex += increaseSummand;
+		topTrackIndex += increaseSummand;
+	}
 	fillTracklistFromTo(bottomTrackIndex, topTrackIndex);
 }
 
