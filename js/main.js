@@ -8,10 +8,18 @@ GoogleMapsLoader.KEY = "AIzaSyCJjEgwGdn2ldnLgpJKUdML5Zrk8X7zt5Y";
 var tracklist = [];			// Liste zum Speichern aller Trackelemente. Aus dieser Liste werden Tracks zum Paginieren entnommen.
 var map;					// Variable 'map' wird später die gespeicherte Karte enthalten
 
+// Paginierungsattribute
 var trackdiv = document.getElementById("tracks");								// trackdiv der index.html holen
 var browserWindowHeight = document.getElementById("googleMap").offsetHeight;	// Höhe des Browserfensters mit padding,border (Paginierung)
 var pageControlHeight = document.getElementById("pageControl").offsetHeight;	// Höhe des PageControlDivs mit (Paginierung)
 var listElementHeight;		// Höhe eines Tracklistenelements holen (wird später zugewiesen)
+var currentPagePosition;
+var tracksToInsert; 		// Anzahl der Tracks, welche gleichzeitig angezeigt werden können
+var bottomTrackIndex = 0;	// Tracks werden von bottomTrackIndex bis upperTrackIndex aus der Trackliste 
+var topTrackIndex;			// zur Paginierung entnommen.
+
+var leftButton = document.getElementById("leftButton");		// Buttons holen um später Evenetlistener anzumelden
+var rightButton = document.getElementById("rightButton");
 
 // Funktion zum Laden der Karte mit Blick auf Trier
 GoogleMapsLoader.load(function (google) {
@@ -30,8 +38,12 @@ fetchTracklist().then(jsonData => {
 	for (var i = 0; i < jsonData.length; i++) {
 		// Trackeintrag erzeugen und in DOM-Baum einfügen
 		var track = document.createElement("li");
+		// class für unterschiedlichen background-color style je nach i setzen
 		if(i % 2 == 0) {
-			track.style.backgroundColor = "#00FFFF";
+			track.className = "listelement01";
+		}
+		else {
+			track.className = "listelement02";
 		}
 		var trackText = document.createTextNode(jsonData[i]);
 		track.setAttribute("id", i);	// id bezeichnet eine :id.json!
@@ -45,27 +57,56 @@ fetchTracklist().then(jsonData => {
 	
 	trackdiv.appendChild(tracklist[0]);				// Ein Trackelement anzeigen
 	listElementHeight = tracklist[0].offsetHeight;	// Höhe des Tracklistenelements abspeichern	(Paginierung)
-	paginateTracklist();							// Trackliste paginieren
+
+	fillTracklist();
 });
 
-// Paginierungsfunktion
-function paginateTracklist() {
-	// Alte Listenelemente löschen (falls vorhanden)
+function removeTracksFromDiv() {
 	while(trackdiv.firstChild) {
 		trackdiv.removeChild(trackdiv.firstChild);
 	}
+}
 
-	// Neue Höhe des divs holen, welche die Tracks enthalten wird
+function fillTracklist() {
+	tracksToInsert = calculateTracksToInsert();
+	topTrackIndex = tracksToInsert;
+	for(var i = bottomTrackIndex; i < tracksToInsert; i++) {
+		trackdiv.appendChild(tracklist[i]);
+	}
+}
+
+function calculateTracksToInsert() {
 	browserWindowHeight = document.getElementById("pageDiv").offsetHeight;
-	// Ausrechnen, wieviele Tracks in die Liste eingefügt werden können
-	var tracksToInsert = Math.floor((browserWindowHeight - pageControlHeight) / listElementHeight);
-	for(var i = 0; i < tracksToInsert; i++) {
+	return Math.floor((browserWindowHeight - pageControlHeight) / listElementHeight);
+}
+
+function fillTracklistFromTo(bottom, top) {
+	for(var i = bottom; i < top; i++) {
 		trackdiv.appendChild(tracklist[i]);
 	}
 }
 
 // Beim Ändern der Größe des Browserfensters wird die Paginierungsfunktion erneut aufgerufen
-window.onresize = paginateTracklist;
+window.onresize = function() {
+	removeTracksFromDiv();
+	fillTracklist();
+}
+
+leftButton.onclick = function() {
+	var decreaseSummand = tracksToInsert;
+	bottomTrackIndex -= decreaseSummand;
+	topTrackIndex -= decreaseSummand;
+	removeTracksFromDiv();
+	fillTracklistFromTo(bottomTrackIndex, topTrackIndex);
+}
+
+rightButton.onclick = function() {
+	var increaseSummand = tracksToInsert;
+	bottomTrackIndex += increaseSummand;
+	topTrackIndex += increaseSummand;
+	removeTracksFromDiv();
+	fillTracklistFromTo(bottomTrackIndex, topTrackIndex);
+}
 
 function fetchTracklist() {
 	return new Promise(function (resolve, reject) {

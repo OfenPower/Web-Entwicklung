@@ -1,11 +1,15 @@
 /*
 vw, vh : viewport-width, viewport-height
+#DDDDDD;
 */
 @vheight: 100vh;
 @vwidthMap: 70vw;
 @vwidthTracks: 30vw; 
-@textColor: #000000;
-@trackColor01: #19DCE8;
+@divColor: #19DCE8;
+@trackColor01: #56cbf0;
+@trackColor02: #00FFFF;
+@textHoverColor: #000000;
+@listElementHoverColor: #FFFFFF;
 
 #googleMap {
     height: @vheight;
@@ -15,7 +19,7 @@ vw, vh : viewport-width, viewport-height
 #pageDiv {
     display: flex;
     flex-direction: column;
-    background-color: @trackColor01;
+    background-color: @divColor;
     width: @vwidthTracks;
     height: @vheight;
 }
@@ -23,7 +27,7 @@ vw, vh : viewport-width, viewport-height
 #pageControl {
     display: flex;
     flex-direction: row;
-    background-color: @trackColor01;
+    background-color: @divColor;
 }
 
 .pageButton {
@@ -32,7 +36,7 @@ vw, vh : viewport-width, viewport-height
     margin: 10px;
     border: none;
     background-color: transparent;
-    &:hover { color: lighten(@textColor, 60%) }
+    &:hover { color: lighten(@textHoverColor, 60%) }
 }
 
 #pageCount {
@@ -52,9 +56,17 @@ vw, vh : viewport-width, viewport-height
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        &:hover { color: lighten(@textColor, 40%) }
-        &:hover { background-color: lighten(@trackColor01, 20%) }
+        &:hover { color: lighten(@textHoverColor, 40%) }
+        &:hover { background-color: lighten(@listElementHoverColor, 20%) }
     }
+}
+
+.listelement01 {
+    background-color: @trackColor01;
+}
+
+.listelement02 {
+    background-color: @trackColor02;
 }
 
 body {
