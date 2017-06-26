@@ -31,11 +31,9 @@ Aufbau einer .json Datei
 					],
 
 Zugriff auf Namen des Tracks einer .json Datei:
-
 var name = jsonTest.features[0].properties.name;
 
 Zugriff auf Koordinaten einer .json Datei:
-
 var jsonTest = require("../assets/data/1.json");
 jsonTest.features[0].geometry.coordinates[0][x]   // x=0,1,2
 
