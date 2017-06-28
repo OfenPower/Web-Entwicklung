@@ -1,32 +1,19 @@
+// externe .js Dateien und Module einbinden
 var fetchTracklist = require("./fetchTracklist.js").fetchTracklist;
-
-// XMLHttpRequest erzeugen, wird später für GET-Abfragen benötigt
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
-// Google Maps API über GoogleMapsLoader laden
-var GoogleMapsLoader = require("google-maps");
+var paginateController = require("./paginateController.js").paginateController;
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;		// XMLHttpRequest für GET-Abfragen benötigt
+var GoogleMapsLoader = require("google-maps");						// Google Maps API über GoogleMapsLoader laden
 GoogleMapsLoader.KEY = "AIzaSyCJjEgwGdn2ldnLgpJKUdML5Zrk8X7zt5Y";
 
+// Globale Variablen
 var tracklistelements = [];	// Liste zum Speichern aller Trackelemente. Aus dieser Liste werden Tracks zum Paginieren entnommen.
 var map;					// Variable 'map' wird später die gespeicherte Karte enthalten
+var coordinatePath;			// coordinatePath enthält später eine angezeigte Route.
 
-// coordinatePath enthält später eine angezeigte Route.
-// Falls es eine schon angezeigte Route gibt, wird diese bei einem 
-// Aufruf von showCoordinates() gelöscht
-var coordinatePath;
-
-// Paginierungsattribute
-var tracklist = document.getElementById("tracklist");	// trackdiv der index.html holen
+// Referenzen auf Html-Elemente holen
+var tracklist = document.getElementById("tracklist");	// in trackdiv stehen die Tracknamen
 var pageCount = document.getElementById("pageCount");	// in pageCount steht die aktuelle und maximale Seitenzahl
-var currentPageCount = 1;	// Seite 1 von maxPageCount-Seiten
-var maxPageCount;
-var listElementHeight;		// Höhe eines Tracklistenelements
-var tracksToInsert; 		// Anzahl der Tracks, welche gleichzeitig angezeigt werden können
-var bottomTrackIndex = 0;	// Tracks werden von bottomTrackIndex bis upperTrackIndex aus der Trackliste 
-var topTrackIndex;			// zur Paginierung entnommen.
-
-// Buttons holen, um später Eventlistener anzumelden
-var leftButton = document.getElementById("leftButton");	
+var leftButton = document.getElementById("leftButton");		// Buttons für Anmeldung von onClickEventlistenern holen 
 var rightButton = document.getElementById("rightButton");
 
 // Funktion zum Laden der Karte mit Blick auf Trier
@@ -46,7 +33,7 @@ fetchTracklist().then(jsonData => {
 	for (var i = 0; i < jsonData.length; i++) {
 		// Trackeintrag erzeugen und in DOM-Baum einfügen
 		var track = document.createElement("li");
-		// class für unterschiedlichen background-color style je nach i setzen
+		// class-id für unterschiedlichen background-color-style je nach i setzen
 		if(i % 2 == 0) {
 			track.className = "listelement01";
 		}
@@ -56,6 +43,8 @@ fetchTracklist().then(jsonData => {
 		var trackText = document.createTextNode(jsonData[i]);
 		track.setAttribute("id", i);	// id bezeichnet eine :id.json!
 		track.addEventListener("mousedown", (event) => {
+			// Bei Mausklick: id-Attribut holen und jeweilige :id.json 
+			// anzeigen
 			var trackId = event.target.getAttribute("id");
 			showCoordinates(trackId);
 		});			
@@ -63,9 +52,13 @@ fetchTracklist().then(jsonData => {
 		tracklistelements.push(track);	// Trackelement in Liste abspeichern
 	}
 	tracklist.appendChild(tracklistelements[0]);				// Ein Trackelement einfügen, um die Höhe zu erhalten.
-	listElementHeight = tracklistelements[0].offsetHeight;	// Diese kann erst nach Einfügen ins DOM abgefragt werden
+	var listElementHeight = tracklistelements[0].offsetHeight;	// Die Höhe kann erst nach Einfügen ins DOM abgefragt werden.
+	paginateController.setListElementHeight(listElementHeight);
+	paginateController.setTracklist(tracklistelements);
 	tracklist.removeChild(tracklistelements[0]);		// => Da Höhe nun bekannt ist => Trackelement wieder entfernen
-	fillTracklist();
+
+	// Trackliste auffüllen
+	paginateController.fillTracklist();
 });
 
 /*
@@ -74,79 +67,42 @@ fetchTracklist().then(jsonData => {
 ------------------------------------------------------------------------------------------------------------------------------------
 */
 
-function fillTracklist() {
-	tracksToInsert = calculateTracksToInsert();
-	maxPageCount = calculatePageCount();
-	bottomTrackIndex = 0;
-	topTrackIndex = tracksToInsert;
-	for(var i = 0; i < tracksToInsert; i++) {
-		tracklist.appendChild(tracklistelements[i]);
-	}
-	pageCount.innerHTML = currentPageCount + "/" + maxPageCount;
-	console.log("currentPageCount " + currentPageCount);
-	console.log("maxPageCount " + maxPageCount);
-}
-
-function calculateTracksToInsert() {
-	var browserWindowHeight = document.getElementById("pageDiv").offsetHeight;		// Höhe des Browserfensters holen
-	var pageControlHeight = document.getElementById("pageControl").offsetHeight;	// Höhe des PageControlDivs mit (Paginierung)
-	return Math.floor((browserWindowHeight - pageControlHeight) / listElementHeight);
-}
-
-function calculatePageCount() {
-	// Länge von 'tracklist' geteilt durch 'tracksToInsert' aufgerundet ergibt
-	// die Anzahl der maximalen Trackseiten!
-	return Math.ceil(tracklistelements.length / tracksToInsert);
-}
-
-function removeTracksFromDiv() {
-	while(tracklist.firstChild) {
-		tracklist.removeChild(tracklist.firstChild);
-	}
-}
-
-function fillTracklistFromTo(bottom, top) {
-	removeTracksFromDiv();
-	pageCount.innerHTML = currentPageCount + "/" + maxPageCount;
-	for(var i = bottom; i < top; i++) {
-		tracklist.appendChild(tracklistelements[i]);
-	}
-}
-
 // Beim Ändern der Größe des Browserfensters wird neu paginiert
 window.onresize = function() {
 	var browserWindowHeight = document.getElementById("pageDiv").offsetHeight;
 	if(browserWindowHeight >= 200) {
-		removeTracksFromDiv();
-		currentPageCount = 1;
-		fillTracklist();
+		paginateController.removeTracksFromDiv();
+		paginateController.resetCurrentPageCount();
+		paginateController.fillTracklist();
 	}
 }
 
+// Anmeldung der onClickListener an beide Buttons
+//
 leftButton.onclick = function() {
-	var decreaseSummand = tracksToInsert;
-	if(bottomTrackIndex - decreaseSummand >= 0) {
-		bottomTrackIndex -= decreaseSummand;
-		topTrackIndex -= decreaseSummand;
-		currentPageCount--;
+	var decreaseSummand = paginateController.tracksToInsert;
+	if(paginateController.bottomTrackIndex - decreaseSummand >= 0) {
+		paginateController.bottomTrackIndex -= decreaseSummand;
+		paginateController.topTrackIndex -= decreaseSummand;
+		paginateController.currentPageCount--;
 	}
-	fillTracklistFromTo(bottomTrackIndex, topTrackIndex);
+	paginateController.fillTracklistFromTo(paginateController.bottomTrackIndex, paginateController.topTrackIndex);
 }
 
 rightButton.onclick = function() {
-	if(currentPageCount < maxPageCount) {	
-		currentPageCount++;
-		var increaseSummand = tracksToInsert;
+	if(paginateController.currentPageCount < paginateController.maxPageCount) {	
+		paginateController.currentPageCount++;
+		var increaseSummand = paginateController.tracksToInsert;
 		// Prüfen, ob topTrackIndex nicht "überläuft"
-		if(topTrackIndex + increaseSummand <= tracklistelements.length) {	
-			bottomTrackIndex += increaseSummand;	
-			topTrackIndex += increaseSummand;
-			fillTracklistFromTo(bottomTrackIndex, topTrackIndex);
+		if(paginateController.topTrackIndex + increaseSummand <= tracklistelements.length) {	
+			paginateController.bottomTrackIndex += increaseSummand;	
+			paginateController.topTrackIndex += increaseSummand;
+			paginateController.fillTracklistFromTo(paginateController.bottomTrackIndex, paginateController.topTrackIndex);
 		}
 		else {
-			fillTracklistFromTo(topTrackIndex, tracklistelements.length);
-			bottomTrackIndex += increaseSummand;
-			topTrackIndex += increaseSummand;
+			paginateController.fillTracklistFromTo(paginateController.topTrackIndex, tracklistelements.length);
+			paginateController.bottomTrackIndex += increaseSummand;
+			paginateController.topTrackIndex += increaseSummand;
 		}
 	}
 }
@@ -207,17 +163,11 @@ function showCoordinates (trackId) {
 // 'showCoordinates()' auf das Ergebnis der Anfrage (.json Dokument) gewartet
 function fetchTrack(trackId) {
 	return new Promise(function (resolve, reject) {
-		// XMLhttpRequest fordert Ressource /tracks/:id an
-		// @param1: http-methode
-		// @param2: url
-		// @param3: asynch, ja oder nein?
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", "http://localhost:8080/tracks/" + trackId, true);
 		xhr.addEventListener("error", error => { console.log(error.toString()); });
 		xhr.addEventListener("load", () => {
 			if (xhr.status >= 200 && xhr.status < 300) {
-				// Ergebnis der GET-Anfrage zu .json parsen
-				// und mit resolve() dem Aufrufer zurückgeben
 				var response = JSON.parse(xhr.responseText);
 				resolve(response);
 			}
