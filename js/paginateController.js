@@ -1,23 +1,32 @@
 // Paginierungs Object-Literal
 var paginateController = {
 	// Paginierungs-Attribute
-	tracklistelements : null,	// wird von außen gesetzt
+	tracklist : null,			// trackdiv, wird von außen gesetzt
+	tracklistElements : null,	// wird von außen gesetzt
 	listElementHeight : null,	// wird von außen gesetzt
 	bottomTrackIndex : 0,
     topTrackIndex : null,
 	tracksToInsert : null,
+	pageCount : null,			// pageCount-paragraph, wird von außen gesetzt
 	currentPageCount : 1,
 	maxPageCount : null,
 
 	// Setter-Funktionen für einige Attribute
 	//
-	setTracklist : function(elements) {
-		this.tracklistelements = elements;
+	setTracklist : function(list) {
+		this.tracklist = list;
+	},
+
+	setTracklistElements : function(elements) {
+		this.tracklistElements = elements;
 	},
 
 	setListElementHeight : function(height) {
 		this.listElementHeight = height;
-		console.log(this.listElementHeight);
+	},
+
+	setPageCount : function(pagePar) {
+		this.pageCount = pagePar;
 	},
 	
 	// Paginierunsfunktionen
@@ -28,7 +37,7 @@ var paginateController = {
 		this.bottomTrackIndex = 0;
 		this.topTrackIndex = this.tracksToInsert;
 		for(var i = 0; i < this.tracksToInsert; i++) {
-			tracklist.appendChild(this.tracklistelements[i]);
+			tracklist.appendChild(this.tracklistElements[i]);
 		}
 		pageCount.innerHTML = this.currentPageCount + "/" + this.maxPageCount;
 	},
@@ -37,7 +46,7 @@ var paginateController = {
 		this.removeTracksFromDiv();
 		pageCount.innerHTML = this.currentPageCount + "/" + this.maxPageCount;
 		for(var i = bottom; i < top; i++) {
-			tracklist.appendChild(this.tracklistelements[i]);
+			tracklist.appendChild(this.tracklistElements[i]);
 		}
 	},
 
@@ -48,7 +57,7 @@ var paginateController = {
 	},
 
 	calculateMaxPageCount : function() {
-		return Math.ceil(this.tracklistelements.length / this.tracksToInsert);
+		return Math.ceil(this.tracklistElements.length / this.tracksToInsert);
 	},
 
 	removeTracksFromDiv : function() {

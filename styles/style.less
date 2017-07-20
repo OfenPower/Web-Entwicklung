@@ -5,6 +5,8 @@ vw, vh : viewport-width, viewport-height
 @vheight: 100vh;
 @vwidthMap: 70vw;
 @vwidthTracks: 30vw; 
+@canvasBottomVHeight: 5vh;
+@canvasLeftVWidth: 2.5vw;
 @divColor: #19DCE8;
 @trackColor01: #56cbf0;
 @trackColor02: #00FFFF;
@@ -12,8 +14,22 @@ vw, vh : viewport-width, viewport-height
 @listElementHoverColor: #FFFFFF;
 
 #googleMap {
+    position: relative; // für Canvas-Overlay
     height: @vheight;
     width: @vwidthMap;
+    z-index: 0;
+}
+
+#heightMapDiv {
+    position: absolute; // für Canvas-Overlay
+    z-index: 1;         // für Canvas-Overlay
+    bottom: @canvasBottomVHeight;
+    left: @canvasLeftVWidth;
+}
+
+#heightMapCanvas {
+    border: 1px solid black;
+    opacity: 0.5;   // transparenz
 }
 
 #pageDiv {
