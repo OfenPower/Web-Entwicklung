@@ -1,9 +1,14 @@
+/*
+Diese Datei enthält den Paginierungscontroller, welcher alle Attribute und Funktionen 
+die zur Paginierung benötigt werden, einkapselt 
+*/
+
 // Paginierungs Object-Literal
 var paginateController = {
 	// Paginierungs-Attribute
-	tracklist : null,			// trackdiv, wird von außen gesetzt
-	tracklistElements : null,	// wird von außen gesetzt
-	listElementHeight : null,	// wird von außen gesetzt
+	tracklist : null,			// html-tracklist (wird von außen gesetzt)
+	tracklistElements : null,	// Liste der Track-Objekte (wird von außen gesetzt)
+	listElementHeight : null,	// Höhe eines Listenelements (wird von außen gesetzt)
 	bottomTrackIndex : 0,
     topTrackIndex : null,
 	tracksToInsert : null,
@@ -39,6 +44,7 @@ var paginateController = {
 		for(var i = 0; i < this.tracksToInsert; i++) {
 			tracklist.appendChild(this.tracklistElements[i]);
 		}
+		// Seitenzahl anpassen
 		pageCount.innerHTML = this.currentPageCount + "/" + this.maxPageCount;
 	},
 
