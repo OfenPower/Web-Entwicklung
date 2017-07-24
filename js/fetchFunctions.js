@@ -2,8 +2,10 @@
 Diese Datei enthält alle Funktionen zur Datenanfrage beim Server (über HTTP-GET und Promises)
 */
 
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;		// XMLHttpRequest für GET-Abfragen einbinden
+
 // Funktion liefert ein Promise auf die Trackliste zurück
-module.exports.fetchTracklist = function() {
+module.exports.fetchTracklist = function () {
 	return new Promise(function (resolve, reject) {
 		// XMLhttpRequest fordert Ressource /tracks/:id an
 		var xhr = new XMLHttpRequest();
@@ -15,17 +17,17 @@ module.exports.fetchTracklist = function() {
 				resolve(response);
 			}
 			else {
-				console.warn(xhr.statusText, xhr.responseText);
+				reject(xhr.statusText, xhr.responseText);
 			}
 		});
 		xhr.send();
 	});
-}
+};
 
 // fetchTrack lädt asynchron die gewünschte .json Ressource (=trackId)
 // über eine GET-Anfrage und liefert ein Promise-Objekt zurück. Auf diesem wird in
 // 'showCoordinates()' auf das Ergebnis der Anfrage (.json Dokument) gewartet
-module.exports.fetchTrack = function(trackId) {
+module.exports.fetchTrack = function (trackId) {
 	return new Promise(function (resolve, reject) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", "http://localhost:8080/tracks/" + trackId, true);
@@ -36,9 +38,9 @@ module.exports.fetchTrack = function(trackId) {
 				resolve(response);
 			}
 			else {
-				console.warn(xhr.statusText, xhr.responseText);
+				reject(xhr.statusText, xhr.responseText);
 			}
 		});
 		xhr.send();
 	});
-}
+};

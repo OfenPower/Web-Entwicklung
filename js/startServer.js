@@ -1,7 +1,11 @@
+/*
+Diese Datei dient zum Starten des HTTP-Servers auf einem beliebigen Port.
+Der Server liefert die Trackdaten als .json Dateien an den Client aus
+*/
+
 const express = require("express");
 const path = require("path");
 const fs = require("fs");	// zum auslesen des /assets/data Ordners
-// const bodyParser = require("body-parser");
 var server = express();		// Express-Server Objekt wird zurückgeliefert
 
 // Kommandozeilenargument (port) einlesen und
@@ -33,7 +37,7 @@ server.get("/tracks", function (req, res) {
 	// Namen als .json Datei an Browser ausliefern
 	// Format: {<index> : <name>}
 	// ACHTUNG: index wird hier ab 0 gezählt, weil 'names' eine Liste ist.
-	// Bei einer entsprechenden /tracks/:id Anfrage wird die angegebene id
+	// Bei einer entsprechenden /tracks/:id Anfrage wird die angegebene id des Clients
 	// um 1 inkrementiert, da die .json Dateien im Fileystem ab index 1
 	// durchnummeriert sind.
 	res.json(names);
@@ -51,19 +55,3 @@ server.get("/tracks/:id", function (req, res) {
 	res.json(require("./../assets/data/" + id + ".json"));
 	res.end();
 });
-
-// bodyParser parst den Body der Http Anfragen
-// und legt Inhalt in request.body ab
-// server.use(bodyParser.json());
-
-// RESTful-Http Modellierung: Einstiegspunkt
-/*
-server.get("", (request, response) => {
-	response.json({
-		_links: {
-			self: { href: `${BASE_URI}`},
-			map: { href: `${BASE_URI}/map`},
-		}
-	});
-});
-*/
