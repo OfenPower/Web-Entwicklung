@@ -22,7 +22,8 @@
     "start": "node ./js/server.js 8080",
     "cleanTmp": "del-cli -f tmp",
     "cleanRelease": "del-cli -f release",
-    "clean": "del-cli -f release && del-cli -f node_modules"
+    "cleanNodeModules": "del-cli -f node_modules",
+    "clean": "npm run cleanTmp && npm run cleanRelease && npm run cleanNodeModules"
   },
   "author": "Daniel Bach, Moritz Steffes",
   "license": "ISC",

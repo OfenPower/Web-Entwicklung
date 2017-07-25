@@ -2,7 +2,7 @@
 Diese Datei enthält den GoogleMapsController zum Umgang mit der GoogleMaps-API
 */
 
-var fetchTrack = require("./fetchFunctions.js").fetchTrack;         // Fetch-Funktion für einzelne Tracks holen
+var fetchTrack = require("./fetchFunctions.js").fetchTrack;			// Fetch-Funktion für einzelne Tracks holen
 var GoogleMapsLoader = require("google-maps");						// Google-Maps-API über GoogleMapsLoader laden
 GoogleMapsLoader.KEY = "AIzaSyCJjEgwGdn2ldnLgpJKUdML5Zrk8X7zt5Y";
 
@@ -13,8 +13,8 @@ var heightMapDiv = document.getElementById("heightMapDiv");
 var googleMapsController = {
 	// GoogleMaps-Attribute
 	map: null,                 	// map speichert die geladene Karte
-	coordinatePath: null,       // coordinatePath enthält später die angezeigte Route
-	heightMapCanvas: null,      // canvas-element zum Zeichnen der Höhenmap
+	coordinatePath: null,		// coordinatePath enthält später die angezeigte Route
+	heightMapCanvas: null,		// canvas-element zum Zeichnen der Höhenmap
 
 	// Funktionen zum Umgang mit der GoogleMaps-API
 	//

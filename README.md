@@ -1,14 +1,14 @@
 # Web-Entwicklung
 Hausarbeit - Repository
 -----------------------------------------------------------------
-
+Erster Schritt: npm install 
+-----------------------------------------------------------------
 Zum Builden des Projekts, im Projektordner in der Konsole 'npm run build' (für zusätzliche Dateiminifizierung)
 bzw. 'npm run debug' (ohne Minifizierung) eintippen. Im Ordner /release befinden sich dann alle benötigten Datein zum 
 Starten des Servers. 
 Der Befehl 'npm start' fährt den Http-Server auf Port 8080 hoch. 
 Der Befehl 'npm run clean' bereinigt das Projekt (= Löschen des /tmp /release und /node-modules Ordner).
 Der Befehl 'node ./js/startServer <port>' startet den Http-Server auf dem angegebenem Port.
-
 -------------------------------------------------------------------------------------
 Lesen der .json Dateien.
 -------------------------------------------------------------------------------------
