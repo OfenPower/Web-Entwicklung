@@ -1,5 +1,6 @@
 /*
 Diese Datei enthält onClick-Callbacks, welche den Buttons zugewiesen werden können.
+Die Buttons verändern bottomTrackIndex und topTrackIndex und rufen fillTracklistFromTo(bot, top) auf!
 */
 
 var buttonController = {
