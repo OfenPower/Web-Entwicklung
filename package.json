@@ -19,12 +19,12 @@
     "predebug": "npm run cleanRelease",
     "build": "npm run lint && npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run minificationjs && npm run minificationcss && npm run htmlToRelease && npm run minCssToRelease && npm run minJsToRelease && npm run cleanTmp && npm start",
     "debug": "npm run lint && npm run mkTmpRelease && npm run browserifyjs && npm run lessToCss && npm run htmlToRelease && npm run cssToRelease && npm run jsToRelease && npm run cleanTmp && npm start",
-    "start": "node ./js/startServer.js 8080",
+    "start": "node ./js/server.js 8080",
     "cleanTmp": "del-cli -f tmp",
     "cleanRelease": "del-cli -f release",
     "clean": "del-cli -f release && del-cli -f node_modules"
   },
-  "author": "Daniel Bach",
+  "author": "Daniel Bach, Moritz Steffes",
   "license": "ISC",
   "dependencies": {
     "express": "latest",
