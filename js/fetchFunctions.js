@@ -9,7 +9,8 @@ module.exports.fetchTracklist = function () {
 	return new Promise(function (resolve, reject) {
 		// XMLhttpRequest fordert Ressource /tracks/:id an
 		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://localhost:8080/tracks/names", true);	// asynchrone GET-Anfrage
+		var url = document.URL;		// URL für port holen
+		xhr.open("GET", url + "tracks/names", true);	// asynchrone GET-Anfrage
 		xhr.addEventListener("error", error => { console.log(error.toString()); });
 		xhr.addEventListener("load", () => {
 			if (xhr.status >= 200 && xhr.status < 300) {
@@ -30,7 +31,8 @@ module.exports.fetchTracklist = function () {
 module.exports.fetchTrack = function (trackId) {
 	return new Promise(function (resolve, reject) {
 		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://localhost:8080/tracks/" + trackId, true);
+		var url = document.URL;		// URL für port holen
+		xhr.open("GET", url + "tracks/" + trackId, true);
 		xhr.addEventListener("error", error => { console.log(error.toString()); });
 		xhr.addEventListener("load", () => {
 			if (xhr.status >= 200 && xhr.status < 300) {

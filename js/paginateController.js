@@ -55,7 +55,7 @@ var paginateController = {
 	calculateTracksToInsert: function () {
 		var browserWindowHeight = document.getElementById("pageDiv").offsetHeight;		// Höhe des Browserfensters holen
 		var pageControlHeight = document.getElementById("pageControl").offsetHeight;	// Höhe des PageControlDivs mit
-		return Math.floor((browserWindowHeight - pageControlHeight) / this.listElementHeight);	// abrunden!
+		return Math.floor((browserWindowHeight - pageControlHeight) / (this.listElementHeight + 0.5));	// abrunden!
 	},
 
 	// Seitenanzahl bestimmen

@@ -65,6 +65,7 @@ window.onresize = function () {
 		paginateController.removeTracksFromDiv();
 		paginateController.resetCurrentPageCount();
 		paginateController.fillTracklist();
+		googleMapsController.resizeBounds();
 	}
 };
 

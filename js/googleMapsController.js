@@ -14,6 +14,7 @@ var googleMapsController = {
 	// GoogleMaps-Attribute
 	map: null,                 	// map speichert die geladene Karte
 	coordinatePath: null,		// coordinatePath enthält später die angezeigte Route
+	bounds: null,
 	heightMapCanvas: null,		// canvas-element zum Zeichnen der Höhenmap
 
 	// Funktionen zum Umgang mit der GoogleMaps-API
@@ -70,13 +71,13 @@ var googleMapsController = {
 				this.coordinatePath.setMap(this.map);
 
 				// Map auf die eingeblendete Route zentrieren
-				var bounds = new google.maps.LatLngBounds();
+				this.bounds = new google.maps.LatLngBounds();
 				for (var j = 0; j < coordinates.length; j++) {
 					// LatLngBounds-Objekt pro Koordinate "erweitern"
-					bounds.extend(coordinates[j]);
+					this.bounds.extend(coordinates[j]);
 				}
-				this.map.fitBounds(bounds);
-				this.map.setCenter(bounds.getCenter());
+				this.map.fitBounds(this.bounds);
+				this.map.setCenter(this.bounds.getCenter());
 
 				// Höhenmap erzeugen und zeichnen
 				// ACHTUNG: this.createHeightMap funktioniert hier nicht, da GoogleMapsLoader.load(callback)
@@ -84,6 +85,13 @@ var googleMapsController = {
 				// Daher muss im callback die Funktion manuell auf dem Objekt aufgerufen werden
 				googleMapsController.createHeightMap(heightCoordinates);
 			});
+		});
+	},
+
+	resizeBounds: function () {
+		GoogleMapsLoader.load(function (google) {
+			this.map.fitBounds(this.bounds);
+			this.map.setCenter(this.bounds.getCenter());
 		});
 	},
 
